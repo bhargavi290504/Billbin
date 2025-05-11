@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/style.css">
+  <title>Dashboard - Billbin</title>
+  <!-- FullCalendar Stylesheet -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #fbd3e9, #bb377d);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      animation: fadeInDrop 1s ease-in-out;
+      margin: 20px 0;
+      flex-grow: 1;
+    }
+
+    .logout-btn {
+      background-color: #fff;
+      border: none;
+      padding: 10px 18px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #bb377d;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .status-bar {
+      font-size: 1.1rem;
+      font-weight: bold;
+      background-color: #fff;
+      padding: 10px 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px; 
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      width: 280px;
+    }
+
+    .box h3 {
+      margin-top: 0;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    input[type="file"],
+    input[type="date"] {
+      width: 90%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin: 8px 0 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #bb377d;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #9a2b65;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    a.logout-btn {
+      text-decoration: none;
+      margin-left: auto;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div></div>
+    <h2>Welcome to Your Dashboard</h2>
+    <a class="logout-btn" href="/logout">Logout</a>
+  </div>
+
+  <div class="status-bar">
+    Monthly Limit: ₹{{ limit }} |
+    Minimum Balance: ₹{{ min_balance }} |
+    Spent: ₹{{ spent }} |
+    Remaining: ₹{{ remaining }}
+  </div>
+
+  <div class="section">
+
+    <!-- Set Monthly Limit Box -->
+    <div class="box">
+      <h3>Set Limits</h3>
+      <form method="POST" action="/dashboard">
+        <label for="limit">Monthly Limit:</label>
+        <input type="number" id="limit" name="limit" required>
+
+        <label for="min_balance">Minimum Balance:</label>
+        <input type="number" id="min_balance" name="min_balance" required>
+
+        <button type="submit">Set Limit</button>
+      </form>
+    </div>
+    <div class="box">
+        <h3>Filter Bills by Date</h3>
+        <form method="POST" action="/filter_bills">
+          <label for="filter_date">Select Date:</label>
+          <input type="date" id="filter_date" name="filter_date" required>
+      
+          <button type="submit" name="filter" value="1">Filter Bills</button>
+        </form>
+      
+        {% if filtered_bills %}
+          <h4>Bills for {{ filter_date }}:</h4>
+          <ul>
+            {% for bill in filtered_bills %}
+              <li>{{ bill.purpose }} — ₹{{ bill.amount }} - {{ bill.date }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    <!-- Upload Bill and Add via Voice Box -->
+    <div class="box">
+      <h3>Upload Bill</h3>
+      <form method="POST" action="/dashboard" enctype="multipart/form-data">
+        <label for="bill_img">Upload Bill Image:</label>
+        <input type="file" id="bill_img" name="bill_img" required>
+        <button type="submit" name="upload_bill" value="1">Upload Bill</button> 
+        
+      </form>
+      
+      <h3>Add via Voice</h3>
+      <form method="POST" action="/dashboard">
+        <button type="submit" name="voice" value="1">Add via Voice</button>
+      </form>
+    </div>
+
+    <!-- Bill History Box -->
+    <div class="box">
+      <h3>Bill History</h3>
+      <ul>
+        {% for bill in bills %}
+          <li>{{ bill.purpose }} — ₹{{ bill.amount }} - {{ bill.date }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Add Bill by Date Box -->
+    <div class="box">
+      <h3>Add Bill by Date</h3>
+      <form method="POST" action="/dashboard">
+        <label for="bill_date">Date:</label>
+        <input type="date" id="bill_date" name="bill_date" required>
+
+        <label for="purpose">Purpose:</label>
+        <input type="text" id="purpose" name="purpose" required>
+
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" required>
+
+        <button type="submit" name="add_manual" value="1">Add Bill</button>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>

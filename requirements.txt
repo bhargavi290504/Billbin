@@ -1,0 +1,8 @@
+flask
+flask_sqlalchemy
+flask_login
+flask_bcrypt
+pytesseract
+opencv-python
+SpeechRecognition
+email-validator

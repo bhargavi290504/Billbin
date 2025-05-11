@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+  <title>Welcome to Billbin</title> 
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      position: relative;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .glow-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2), transparent);
+      animation: float 6s ease-in-out infinite alternate;
+      filter: blur(60px);
+      z-index: 0;
+    }
+
+    .circle1 {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .circle2 {
+      width: 400px;
+      height: 400px;
+      bottom: 10%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+
+    .circle3 {
+      width: 200px;
+      height: 200px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: 4s;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    .welcome-text {
+      font-size: 3rem;
+      color: #0a0a0a;
+      margin-top: 20px;
+      z-index: 2;
+      animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-img {
+      width: 180px;
+      z-index: 2;
+      animation: bounce 2s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .top-right-buttons {
+      position: absolute;
+      top: 25px;
+      right: 30px;
+      display: flex;
+      gap: 15px;
+      z-index: 3;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 60%);
+      transform: rotate(0deg);
+      animation: btnGlow 4s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes btnGlow {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 45px rgba(255, 126, 179, 0.3);
+    }
+
+    @media (max-width: 600px) {
+      .welcome-text {
+        font-size: 2rem;
+        text-align: center;
+        padding: 0 20px;
+      }
+
+      .hero-img {
+        width: 140px;
+      }
+
+      .top-right-buttons {
+        flex-direction: column;
+        right: 20px;
+        top: 20px;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+      }
+    }
+
+    .tagline {
+      font-size: 1.5rem;
+      color: #0a0a0a;
+      margin-top: 10px;
+      z-index: 2;
+      animation: fadeIn 2s ease;
+    }
+
+    .copyright {
+      position: absolute;
+      bottom: 10px;
+      font-size: 0.8rem;
+      color: #0a0a0a;
+      z-index: 2;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Animated Glowing Circles -->
+  <div class="glow-circle circle1"></div>
+  <div class="glow-circle circle2"></div>
+  <div class="glow-circle circle3"></div>
+
+  <!-- Top right navigation buttons -->
+  <div class="top-right-buttons">
+    <a href="/register" class="btn">Register</a>
+    <a href="/login" class="btn">Login</a>
+  </div>
+
+  <!-- Welcome heading -->
+  <h1 class="welcome-text">Welcome to Billbin</h1>
+  
+  <!-- Tagline below the welcome message -->
+  <h3 class="tagline">Snap It. Say It. Save It!</h3>
+
+  <!-- Copyright message -->
+  <div class="copyright">© Bhargavi Sreekantha</div>
+
+</body>
+</html>
